@@ -54,21 +54,22 @@ function modifiers(name, event) {
   if (event.ctrlKey) name = "Ctrl-" + name
   if (event.metaKey) name = "Meta-" + name
   if (event.shiftKey) name = "Shift-" + name
+  return name
 }
 
 function keymap(bindings) {
   let map = normalize(bindings)
 
   return {
-    onKeyPress(view, event) {
+    onKeyDown(view, event) {
       for (let name = event.code || keyCodes[event.keyCode]; name; name = reduce[name]) {
-        let bound = map[modifiers(name)]
+        let bound = map[modifiers(name, event)]
         if (bound && bound(view.state, view.props.onAction)) return true
       }
       return false
     },
 
-    onKeyDown(view, event) {
+    onKeyPress(view, event) {
       let bound = map["'" + String.fromCharCode(event.charCode) + "'"]
       return bound ? bound(view.state, view.props.onAction) : false
     }
