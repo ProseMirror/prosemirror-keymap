@@ -61,7 +61,7 @@ function keymap(bindings) {
   let map = normalize(bindings)
 
   return {
-    onKeyDown(view, event) {
+    handleKeyDown(view, event) {
       for (let name = event.code || keyCodes[event.keyCode]; name; name = reduce[name]) {
         let bound = map[modifiers(name, event)]
         if (bound && bound(view.state, view.props.onAction)) return true
@@ -69,7 +69,7 @@ function keymap(bindings) {
       return false
     },
 
-    onKeyPress(view, event) {
+    handleKeyPress(view, event) {
       let bound = map["'" + String.fromCharCode(event.charCode) + "'"]
       return bound ? bound(view.state, view.props.onAction) : false
     }
