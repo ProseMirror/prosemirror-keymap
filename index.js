@@ -64,7 +64,7 @@ function keymap(bindings) {
     handleKeyDown(view, event) {
       for (let name = event.code || keyCodes[event.keyCode]; name; name = reduce[name]) {
         let bound = map[modifiers(name, event)]
-        if (bound && bound(view.state, view.props.onAction)) return true
+        if (bound && bound(view.state, view.props.onAction, view)) return true
       }
       return false
     },
