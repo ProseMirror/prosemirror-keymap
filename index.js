@@ -1,5 +1,6 @@
 const keyCodes = require("w3c-keycode")
-const {mac} = require("../util/browser")
+
+const mac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
 
 const reduce = {
   MetaLeft: "Meta",
