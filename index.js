@@ -58,6 +58,34 @@ function modifiers(name, event) {
   return name
 }
 
+// :: (Object) → Object
+// Create a keymap plugin for the given set of bindings, which should
+// map key names to [command](#command) functions.
+//
+// Key names may be strings like `"Ctrl-Shift-Enter"`, a key
+// identifier prefixed with zero or more modifiers. Key identifiers
+// are based on the strings that can appear in
+// [`KeyEvent.code`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code).
+//
+// For convenience, this module adds a few shorthands, like being able
+// to say `A` instead of `KeyA` for the A key, and `1` instead of
+// `Digit1`. It also allows `Shift` to cover both `LeftShift` and
+// `RightShift`, and similarly for other keys that have both a left and
+// right variant.
+//
+// Modifiers can be given in any order. `Shift-` (or `s-`), `Alt-` (or
+// `a-`), `Ctrl-` (or `c-` or `Control-`) and `Cmd-` (or `m-` or
+// `Meta-`) are recognized. You can say `Mod-` as a shorthand for
+// `Cmd-` on Mac and `Ctrl-` on other platforms.
+//
+// Binding a typed character (i.e. a `keypress` instead of a `keydown`
+// event) is done by wrapping the character in single quotes, as in
+// `"'x'"`. No modifiers are allowed for typed characters (since
+// `keypress` events don't expose modifier info).
+//
+// You can add multiple keymap plugins to an editor. The order in
+// which they appear determines their precedence (the ones early in
+// the array get to dispatch first).
 function keymap(bindings) {
   let map = normalize(bindings)
 
