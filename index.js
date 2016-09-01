@@ -1,4 +1,5 @@
 const keyCodes = require("w3c-keycode")
+const {Plugin} = require("../state")
 
 const mac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
 
@@ -58,7 +59,7 @@ function modifiers(name, event) {
   return name
 }
 
-// :: (Object) → Object
+// :: (Object) → Plugin
 // Create a keymap plugin for the given set of bindings, which should
 // map key names to [command](#commands._module) functions.
 //
@@ -89,19 +90,21 @@ function modifiers(name, event) {
 function keymap(bindings) {
   let map = normalize(bindings)
 
-  return {
-    handleKeyDown(view, event) {
-      for (let name = event.code || keyCodes[event.keyCode]; name; name = reduce[name]) {
-        let bound = map[modifiers(name, event)]
-        if (bound && bound(view.state, view.props.onAction, view)) return true
-      }
-      return false
-    },
+  return new Plugin({
+    props: {
+      handleKeyDown(view, event) {
+        for (let name = event.code || keyCodes[event.keyCode]; name; name = reduce[name]) {
+          let bound = map[modifiers(name, event)]
+          if (bound && bound(view.state, view.props.onAction, view)) return true
+        }
+        return false
+      },
 
-    handleKeyPress(view, event) {
-      let bound = map["'" + String.fromCharCode(event.charCode) + "'"]
-      return bound ? bound(view.state, view.props.onAction) : false
+      handleKeyPress(view, event) {
+        let bound = map["'" + String.fromCharCode(event.charCode) + "'"]
+        return bound ? bound(view.state, view.props.onAction) : false
+      }
     }
-  }
+  })
 }
 exports.keymap = keymap
