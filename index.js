@@ -61,7 +61,7 @@ function modifiers(name, event) {
 
 // :: (Object) → Plugin
 // Create a keymap plugin for the given set of bindings, which should
-// map key names to [command](#commands._module) functions.
+// map key names to [command](#commands) functions.
 //
 // Key names may be strings like `"Ctrl-Shift-Enter"`, a key
 // identifier prefixed with zero or more modifiers. Key identifiers
