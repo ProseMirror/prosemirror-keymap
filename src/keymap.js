@@ -1,5 +1,5 @@
 const keyCodes = require("w3c-keycode")
-const {Plugin} = require("../state")
+const {Plugin} = require("prosemirror-state")
 
 const mac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
 
