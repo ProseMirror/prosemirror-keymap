@@ -102,7 +102,7 @@ function keymap(bindings) {
 
       handleKeyPress(view, event) {
         let bound = map["'" + String.fromCharCode(event.charCode) + "'"]
-        return bound ? bound(view.state, view.props.onAction) : false
+        return bound ? bound(view.state, view.props.onAction, view) : false
       }
     }
   })
