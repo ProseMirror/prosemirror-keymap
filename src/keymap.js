@@ -62,8 +62,14 @@ function modifiers(name, event) {
 }
 
 // :: (Object) → Plugin
-// Create a keymap plugin for the given set of bindings, which should
-// map key names to [command](#commands) functions.
+// Create a keymap plugin for the given set of bindings.
+//
+// Bindings should map key names to [command](#commands)-style
+// functions, which will be called with `(EditorState, onAction,
+// EditorView)` arguments, and should return true when they've handled
+// the key. Note that the view argument isn't part of the command
+// protocol, but can be used as an escape hatch if a binding needs to
+// directly interact with the UI.
 //
 // Key names may be strings like `"Ctrl-Shift-Enter"`, a key
 // identifier prefixed with zero or more modifiers. Key identifiers
