@@ -1,4 +1,4 @@
-const {keymap} = require("../src/keymap")
+const {keymap} = require("../dist/keymap")
 const keyCodes = require("w3c-keycode")
 const ist = require("ist")
 
