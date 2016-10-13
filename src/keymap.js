@@ -8,7 +8,6 @@ const mac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : f
 function normalizeKeyName(name) {
   let parts = name.split(/-(?!$)/), result = parts[parts.length - 1]
   if (result == "Space") result = " "
-  let isChar = result.length == 1 && result != " "
   let alt, ctrl, shift, meta
   for (let i = 0; i < parts.length - 1; i++) {
     let mod = parts[i]
@@ -22,7 +21,7 @@ function normalizeKeyName(name) {
   if (alt) result = "Alt-" + result
   if (ctrl) result = "Ctrl-" + result
   if (meta) result = "Meta-" + result
-  if (shift && !isChar) result = "Shift-" + result
+  if (shift) result = "Shift-" + result
   return result
 }
 
@@ -32,12 +31,11 @@ function normalize(map) {
   return copy
 }
 
-function modifiers(name, event) {
-  let isChar = name.length == 1 && name != " "
+function modifiers(name, event, shift) {
   if (event.altKey) name = "Alt-" + name
   if (event.ctrlKey) name = "Ctrl-" + name
   if (event.metaKey) name = "Meta-" + name
-  if (!isChar && event.shiftKey) name = "Shift-" + name
+  if (shift !== false && event.shiftKey) name = "Shift-" + name
   return name
 }
 
@@ -55,13 +53,15 @@ function modifiers(name, event) {
 // identifier prefixed with zero or more modifiers. Key identifiers
 // are based on the strings that can appear in
 // [`KeyEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
-// You may use `"Space"` as an alias for the `" "` name.
+// Use lowercase letters to refer to letter keys (or uppercase letters
+// if you want shift to be held). You may use `"Space"` as an alias
+// for the `" "` name.
 //
 // Modifiers can be given in any order. `Shift-` (or `s-`), `Alt-` (or
 // `a-`), `Ctrl-` (or `c-` or `Control-`) and `Cmd-` (or `m-` or
-// `Meta-`) are recognized. For single-character key names other than
-// space, the `Shift-` modifier is ignored, since the effect of shift
-// is already captured in the character.
+// `Meta-`) are recognized. For characters that are created by holding
+// shift, the `Shift-` prefix is implied, and should not be added
+// explicitly.
 //
 // You can use `Mod-` as a shorthand for `Cmd-` on Mac and `Ctrl-` on
 // other platforms.
@@ -75,8 +75,14 @@ function keymap(bindings) {
   return new Plugin({
     props: {
       handleKeyDown(view, event) {
-        let bound = map[modifiers(keyName(event), event)]
-        return !!(bound && bound(view.state, view.props.onAction, view))
+        let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
+        let direct = map[modifiers(name, event, !isChar)]
+        if (direct && direct(view.state, view.props.onAction, view)) return true
+        if (event.shiftKey && isChar && (baseName = keyName.base[event.keyCode])) {
+          let withShift = map[modifiers(baseName, event, true)]
+          if (withShift && withShift(view.state, view.props.onAction, view)) return true
+        }
+        return false
       }
     }
   })
