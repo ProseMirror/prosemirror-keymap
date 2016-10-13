@@ -16,7 +16,7 @@
     "url": "git://github.com/prosemirror/prosemirror-keymap.git"
   },
   "dependencies": {
-    "w3c-keycode": "^1.0.0",
+    "w3c-keyname": "^1.0.0",
     "prosemirror-state": "^0.11.0"
   },
   "devDependencies": {
