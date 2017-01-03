@@ -43,7 +43,7 @@ function modifiers(name, event, shift) {
 // Create a keymap plugin for the given set of bindings.
 //
 // Bindings should map key names to [command](#commands)-style
-// functions, which will be called with `(EditorState, onAction,
+// functions, which will be called with `(EditorState, dispatch,
 // EditorView)` arguments, and should return true when they've handled
 // the key. Note that the view argument isn't part of the command
 // protocol, but can be used as an escape hatch if a binding needs to
@@ -77,10 +77,10 @@ function keymap(bindings) {
       handleKeyDown(view, event) {
         let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
         let direct = map[modifiers(name, event, !isChar)]
-        if (direct && direct(view.state, view.props.onAction, view)) return true
+        if (direct && direct(view.state, view.dispatch, view)) return true
         if (event.shiftKey && isChar && (baseName = keyName.base[event.keyCode])) {
           let withShift = map[modifiers(baseName, event, true)]
-          if (withShift && withShift(view.state, view.props.onAction, view)) return true
+          if (withShift && withShift(view.state, view.dispatch, view)) return true
         }
         return false
       }

@@ -1,7 +1,7 @@
 const {keymap} = require("../dist/keymap")
 const ist = require("ist")
 
-const fakeView = {state: {}, props: {onAction: () => {}}}
+const fakeView = {state: {}, dispatch: () => {}}
 
 function dispatch(map, key, mods) {
   let event = {}
@@ -35,10 +35,10 @@ describe("keymap", () => {
     ist(a_s.count, 0)
   })
 
-  it("passes the state, onAction, and view", () => {
-    dispatch(keymap({X: (state, onAction, view) => {
+  it("passes the state, dispatch, and view", () => {
+    dispatch(keymap({X: (state, dispatch, view) => {
       ist(state, fakeView.state)
-      ist(onAction, fakeView.props.onAction)
+      ist(dispatch, fakeView.dispatch)
       ist(view, fakeView)
     }}), "X")
   })
