@@ -70,21 +70,26 @@ function modifiers(name, event, shift) {
 // which they appear determines their precedence (the ones early in
 // the array get to dispatch first).
 function keymap(bindings) {
-  let map = normalize(bindings)
-
-  return new Plugin({
-    props: {
-      handleKeyDown(view, event) {
-        let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
-        let direct = map[modifiers(name, event, !isChar)]
-        if (direct && direct(view.state, view.dispatch, view)) return true
-        if (event.shiftKey && isChar && (baseName = keyName.base[event.keyCode])) {
-          let withShift = map[modifiers(baseName, event, true)]
-          if (withShift && withShift(view.state, view.dispatch, view)) return true
-        }
-        return false
-      }
-    }
-  })
+  return new Plugin({props: {handleKeyDown: keydownHandler(bindings)}})
 }
 exports.keymap = keymap
+
+// :: (Object) → (view: EditorView, event: dom.Event) → bool
+// Given a keymap, return a [keydown
+// handler](#view.EditorProps.handleKeydown) that implements the
+// bindings for that map, using the same rules as
+// [`keymap`](##keymap.keymap).
+function keydownHandler(bindings) {
+  let map = normalize(bindings)
+  return function(view, event) {
+    let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
+    let direct = map[modifiers(name, event, !isChar)]
+    if (direct && direct(view.state, view.dispatch, view)) return true
+    if (event.shiftKey && isChar && (baseName = keyName.base[event.keyCode])) {
+      let withShift = map[modifiers(baseName, event, true)]
+      if (withShift && withShift(view.state, view.dispatch, view)) return true
+    }
+    return false
+  }
+}
+exports.keydownHandler = keydownHandler
