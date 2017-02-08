@@ -76,7 +76,7 @@ exports.keymap = keymap
 
 // :: (Object) → (view: EditorView, event: dom.Event) → bool
 // Given a keymap, return a [keydown
-// handler](#view.EditorProps.handleKeydown) that implements the
+// handler](#view.EditorProps.handleKeyDown) that implements the
 // bindings for that map, using the same rules as
 // [`keymap`](##keymap.keymap).
 function keydownHandler(bindings) {
