@@ -78,7 +78,7 @@ exports.keymap = keymap
 // Given a keymap, return a [keydown
 // handler](#view.EditorProps.handleKeyDown) that implements the
 // bindings for that map, using the same rules as
-// [`keymap`](##keymap.keymap).
+// [`keymap`](#keymap.keymap).
 function keydownHandler(bindings) {
   let map = normalize(bindings)
   return function(view, event) {
