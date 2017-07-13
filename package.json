@@ -21,8 +21,8 @@
   },
   "devDependencies": {
     "buble": "^0.15.1",
-    "ist": "^1.0.0",
-    "mocha": "^3.0.2",
+    "ist": "^1.0.1",
+    "mocha": "^3.4.2",
     "rimraf": "^2.5.4"
   },
   "scripts": {

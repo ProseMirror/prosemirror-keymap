@@ -42,4 +42,18 @@ describe("keymap", () => {
       ist(view, fakeView)
     }}), "X")
   })
+
+  it("tries both shifted key and base with shift modifier", () => {
+    let percent = counter(), shift5 = counter()
+    dispatch(keymap({"%": percent}), "%", {shiftKey: true, keyCode: 53})
+    ist(percent.count, 1)
+    dispatch(keymap({"Shift-5": shift5}), "%", {shiftKey: true, keyCode: 53})
+    ist(shift5.count, 1)
+  })
+
+  it("tries keyCode when modifier active", () => {
+    let count = counter()
+    dispatch(keymap({"Shift-Alt-3": count}), "×", {shiftKey: true, altKey: true, keyCode: 51})
+    ist(count.count, 1)
+  })
 })
