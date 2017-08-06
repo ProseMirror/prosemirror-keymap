@@ -1,5 +1,5 @@
-const keyName = require("w3c-keyname")
-const {Plugin} = require("prosemirror-state")
+import keyName from "w3c-keyname"
+import {Plugin} from "prosemirror-state"
 
 // declare global: navigator
 
@@ -69,17 +69,16 @@ function modifiers(name, event, shift) {
 // You can add multiple keymap plugins to an editor. The order in
 // which they appear determines their precedence (the ones early in
 // the array get to dispatch first).
-function keymap(bindings) {
+export function keymap(bindings) {
   return new Plugin({props: {handleKeyDown: keydownHandler(bindings)}})
 }
-exports.keymap = keymap
 
 // :: (Object) → (view: EditorView, event: dom.Event) → bool
 // Given a keymap, return a [keydown
 // handler](#view.EditorProps.handleKeyDown) that implements the
 // bindings for that map, using the same rules as
 // [`keymap`](#keymap.keymap).
-function keydownHandler(bindings) {
+export function keydownHandler(bindings) {
   let map = normalize(bindings)
   return function(view, event) {
     let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
@@ -93,4 +92,3 @@ function keydownHandler(bindings) {
     return false
   }
 }
-exports.keydownHandler = keydownHandler
