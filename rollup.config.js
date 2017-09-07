@@ -1,8 +1,7 @@
 module.exports = {
-  entry: "./src/keymap.js",
-  dest: "dist/keymap.js",
-  format: "cjs",
-  sourceMap: true,
+  input: "./src/keymap.js",
+  output: {format: "cjs", file: "dist/keymap.js"},
+  sourcemap: true,
   plugins: [require("rollup-plugin-buble")()],
   external(id) { return !/^[\.\/]/.test(id) }
 }
