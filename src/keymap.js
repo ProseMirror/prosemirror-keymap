@@ -49,7 +49,7 @@ function modifiers(name, event, shift) {
 // protocol, but can be used as an escape hatch if a binding needs to
 // directly interact with the UI.
 //
-// Key names may be strings like `"Shift-Ctrl-Enter"`, a key
+// Key names may be strings like `"Shift-Ctrl-Enter"`—a key
 // identifier prefixed with zero or more modifiers. Key identifiers
 // are based on the strings that can appear in
 // [`KeyEvent.key`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key).
@@ -74,10 +74,9 @@ export function keymap(bindings) {
 }
 
 // :: (Object) → (view: EditorView, event: dom.Event) → bool
-// Given a keymap, return a [keydown
-// handler](#view.EditorProps.handleKeyDown) that implements the
-// bindings for that map, using the same rules as
-// [`keymap`](#keymap.keymap).
+// Given a set of bindings (using the same format as
+// [`keymap`](#keymap.keymap), return a [keydown
+// handler](#view.EditorProps.handleKeyDown) handles them.
 export function keydownHandler(bindings) {
   let map = normalize(bindings)
   return function(view, event) {
