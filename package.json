@@ -1,6 +1,6 @@
 {
   "name": "prosemirror-keymap",
-  "version": "0.24.0",
+  "version": "1.0.0",
   "description": "Keymap plugin for ProseMirror",
   "main": "dist/keymap.js",
   "license": "MIT",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "w3c-keyname": "^1.1.0",
-    "prosemirror-state": "^0.24.0"
+    "prosemirror-state": "^1.0.0"
   },
   "devDependencies": {
     "ist": "^1.0.1",
