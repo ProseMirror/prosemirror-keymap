@@ -1,4 +1,4 @@
-import keyName from "w3c-keyname"
+import {base, keyName} from "w3c-keyname"
 import {Plugin} from "prosemirror-state"
 
 // declare global: navigator
@@ -84,7 +84,7 @@ export function keydownHandler(bindings) {
     let direct = map[modifiers(name, event, !isChar)]
     if (direct && direct(view.state, view.dispatch, view)) return true
     if (isChar && (event.shiftKey || event.altKey || event.metaKey) &&
-        (baseName = keyName.base[event.keyCode]) && baseName != name) {
+        (baseName = base[event.keyCode]) && baseName != name) {
       let fromCode = map[modifiers(baseName, event, true)]
       if (fromCode && fromCode(view.state, view.dispatch, view)) return true
     }
