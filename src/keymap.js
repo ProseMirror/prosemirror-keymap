@@ -80,6 +80,7 @@ export function keymap(bindings) {
 export function keydownHandler(bindings) {
   let map = normalize(bindings)
   return function(view, event) {
+    event.preventDefault();
     let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
     let direct = map[modifiers(name, event, !isChar)]
     if (direct && direct(view.state, view.dispatch, view)) return true

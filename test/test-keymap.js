@@ -7,6 +7,9 @@ function dispatch(map, key, mods) {
   let event = {}
   if (mods) for (let prop in mods) event[prop] = mods[prop]
   event.key = key
+  event.preventDefault = () => {
+    // noop: include for ensuring tests run
+  }
   map.props.handleKeyDown(fakeView, event)
 }
 
