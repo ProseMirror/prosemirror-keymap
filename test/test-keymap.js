@@ -56,4 +56,10 @@ describe("keymap", () => {
     dispatch(keymap({"Shift-Alt-3": count}), "×", {shiftKey: true, altKey: true, keyCode: 51})
     ist(count.count, 1)
   })
+
+  it("tries keyCode when ctrl modifier active", () => {
+    let count = counter()
+    dispatch(keymap({"Ctrl-z": count}), "×", {ctrlKey: true, keyCode: 90})
+    ist(count.count, 1)
+  })
 })
