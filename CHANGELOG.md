@@ -1,3 +1,9 @@
+## 1.0.2 (2019-10-16)
+
+### Bug fixes
+
+Upgrade w3c-keyname package dependency.
+
 ## 1.0.1 (2018-02-23)
 
 ### Bug fixes
