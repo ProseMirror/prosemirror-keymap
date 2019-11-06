@@ -3,6 +3,7 @@
   "version": "1.0.2",
   "description": "Keymap plugin for ProseMirror",
   "main": "dist/keymap.js",
+  "module": "src/keymap.js",
   "license": "MIT",
   "maintainers": [
     {
