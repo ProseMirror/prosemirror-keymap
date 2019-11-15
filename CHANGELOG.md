@@ -1,3 +1,9 @@
+## 1.1.1 (2019-11-15)
+
+### Bug fixes
+
+Fix an issue where keyboards layouts that use shift to produce characters that are created without shift on a US keyboard would fail to fire bindings for those keys that include the Shift- modifier.
+
 ## 1.1.0 (2019-11-08)
 
 ### New features
