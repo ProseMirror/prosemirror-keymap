@@ -87,6 +87,9 @@ export function keydownHandler(bindings) {
         (baseName = base[event.keyCode]) && baseName != name) {
       let fromCode = map[modifiers(baseName, event, true)]
       if (fromCode && fromCode(view.state, view.dispatch, view)) return true
+    } else if (isChar && event.shiftKey) {
+      let withShift = map[modifiers(name, event, true)]
+      if (withShift && withShift(view.state, view.dispatch, view)) return true
     }
     return false
   }
