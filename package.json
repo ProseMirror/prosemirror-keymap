@@ -2,8 +2,8 @@
   "name": "prosemirror-keymap",
   "version": "1.1.1",
   "description": "Keymap plugin for ProseMirror",
-  "main": "dist/keymap.js",
-  "module": "src/keymap.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "license": "MIT",
   "maintainers": [
     {

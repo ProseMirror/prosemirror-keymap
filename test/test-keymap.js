@@ -1,4 +1,4 @@
-const {keymap} = require("../dist/keymap")
+const {keymap} = require("..")
 const ist = require("ist")
 
 const fakeView = {state: {}, dispatch: () => {}}
