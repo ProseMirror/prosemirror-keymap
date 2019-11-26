@@ -44,7 +44,7 @@ Bindings like Alt-3 should now fire even if your keyboard produces a special cha
 
 ### New features
 
-Add a [`keydownHandler`](http://prosemirror.net/docs/ref/version/0.18.0.html#keymap.keydownHandler) function, which takes a keymap and produces a [`handleKeydown` prop](http://prosemirror.net/docs/ref/version/0.18.0.html#view.EditorProps.handleKeydown)-style function.
+Add a [`keydownHandler`](https://prosemirror.net/docs/ref/version/0.18.0.html#keymap.keydownHandler) function, which takes a keymap and produces a [`handleKeydown` prop](https://prosemirror.net/docs/ref/version/0.18.0.html#view.EditorProps.handleKeydown)-style function.
 
 ## 0.12.0 (2016-10-21)
 
