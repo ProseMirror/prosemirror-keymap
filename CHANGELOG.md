@@ -1,3 +1,9 @@
+## 1.1.4 (2020-05-18)
+
+### Bug fixes
+
+Fall through to the name associated with a key's `keyCode` when the character produced isn't ASCII and isn't directly bound.
+
 ## 1.1.3 (2019-11-20)
 
 ### Bug fixes
