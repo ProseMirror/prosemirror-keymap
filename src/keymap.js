@@ -83,11 +83,17 @@ export function keydownHandler(bindings) {
     let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
     let direct = map[modifiers(name, event, !isChar)]
     if (direct && direct(view.state, view.dispatch, view)) return true
-    if (isChar && (event.shiftKey || event.altKey || event.metaKey) &&
+    if (isChar && (event.shiftKey || event.altKey || event.metaKey || name.charCodeAt(0) > 127) &&
         (baseName = base[event.keyCode]) && baseName != name) {
+      // Try falling back to the keyCode when there's a modifier
+      // active or the character produced isn't ASCII, and our table
+      // produces a different name from the the keyCode. See #668,
+      // #1060
       let fromCode = map[modifiers(baseName, event, true)]
       if (fromCode && fromCode(view.state, view.dispatch, view)) return true
     } else if (isChar && event.shiftKey) {
+      // Otherwise, if shift is active, also try the binding with the
+      // Shift- prefix enabled. See #997
       let withShift = map[modifiers(name, event, true)]
       if (withShift && withShift(view.state, view.dispatch, view)) return true
     }

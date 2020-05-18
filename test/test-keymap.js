@@ -56,4 +56,10 @@ describe("keymap", () => {
     dispatch(keymap({"Shift-Alt-3": count}), "×", {shiftKey: true, altKey: true, keyCode: 51})
     ist(count.count, 1)
   })
+
+  it("tries keyCode for non-ASCII characters", () => {
+    let count = counter()
+    dispatch(keymap({"Mod-s": count}), "ы", {ctrlKey: true, keyCode: 83})
+    ist(count.count, 1)
+  })
 })
