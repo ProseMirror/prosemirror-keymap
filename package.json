@@ -23,8 +23,8 @@
   "devDependencies": {
     "ist": "^1.0.1",
     "mocha": "^3.4.2",
-    "rollup": "^1.26.3",
-    "@rollup/plugin-buble": "^0.20.0"
+    "rollup": "^2.26.3",
+    "@rollup/plugin-buble": "^0.21.3"
   },
   "scripts": {
     "test": "mocha test/test-*.js",
