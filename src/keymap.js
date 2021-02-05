@@ -70,19 +70,28 @@ function modifiers(name, event, shift) {
 // which they appear determines their precedence (the ones early in
 // the array get to dispatch first).
 export function keymap(bindings) {
-  return new Plugin({props: {handleKeyDown: keydownHandler(bindings)}})
+  return new Plugin({props: {handleKeyDown: (view, event) => {
+    return keydownHandler(callBindingsWithView(bindings, view))(event)
+  }}})
 }
 
+function callBindingsWithView(map, view) {
+  let copy = Object.create(null)
+  for (let prop in map) copy[prop] = (event) => map[prop](view.state, view.dispatch, view)
+  return copy
+}
+
+// TODO: this comment is not accurate anymore
 // :: (Object) → (view: EditorView, event: dom.Event) → bool
 // Given a set of bindings (using the same format as
 // [`keymap`](#keymap.keymap), return a [keydown
 // handler](#view.EditorProps.handleKeyDown) that handles them.
 export function keydownHandler(bindings) {
   let map = normalize(bindings)
-  return function(view, event) {
+  return function(event) {
     let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
     let direct = map[modifiers(name, event, !isChar)]
-    if (direct && direct(view.state, view.dispatch, view)) return true
+    if (direct && direct(event)) return true
     if (isChar && (event.shiftKey || event.altKey || event.metaKey || name.charCodeAt(0) > 127) &&
         (baseName = base[event.keyCode]) && baseName != name) {
       // Try falling back to the keyCode when there's a modifier
@@ -90,13 +99,14 @@ export function keydownHandler(bindings) {
       // produces a different name from the the keyCode. See #668,
       // #1060
       let fromCode = map[modifiers(baseName, event, true)]
-      if (fromCode && fromCode(view.state, view.dispatch, view)) return true
+      if (fromCode && fromCode(event)) return true
     } else if (isChar && event.shiftKey) {
       // Otherwise, if shift is active, also try the binding with the
       // Shift- prefix enabled. See #997
       let withShift = map[modifiers(name, event, true)]
-      if (withShift && withShift(view.state, view.dispatch, view)) return true
+      if (withShift && withShift(event)) return true
     }
     return false
   }
 }
+
