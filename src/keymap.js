@@ -3,7 +3,7 @@ import {Plugin} from "prosemirror-state"
 
 // declare global: navigator
 
-const mac = typeof navigator != "undefined" ? /Mac/.test(navigator.platform) : false
+const mac = typeof navigator != "undefined" ? /Mac|iP(hone|[oa]d)/.test(navigator.platform) : false
 
 function normalizeKeyName(name) {
   let parts = name.split(/-(?!$)/), result = parts[parts.length - 1]
