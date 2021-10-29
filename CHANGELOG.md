@@ -1,3 +1,9 @@
+## 1.1.5 (2021-10-29)
+
+### Bug fixes
+
+Fix issue where iPhones and iPads with a hardware keyboard didn't have Mod converted to Cmd.
+
 ## 1.1.4 (2020-05-18)
 
 ### Bug fixes
