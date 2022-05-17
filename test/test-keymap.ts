@@ -1,19 +1,20 @@
-const {keymap} = require("..")
-const ist = require("ist")
+import {keymap} from "prosemirror-keymap"
+import {Command, Plugin} from "prosemirror-state"
+import ist from "ist"
 
 const fakeView = {state: {}, dispatch: () => {}}
 
-function dispatch(map, key, mods) {
-  let event = {}
-  if (mods) for (let prop in mods) event[prop] = mods[prop]
+function dispatch(map: Plugin, key: string, props?: {[name: string]: any}) {
+  let event: any = {}
+  if (props) for (let prop in props) event[prop] = props[prop]
   event.key = key
-  map.props.handleKeyDown(fakeView, event)
+  map.props.handleKeyDown!(fakeView as any, event)
 }
 
 function counter() {
-  function result() { result.count++ }
+  function result() { result.count++; return true }
   result.count = 0
-  return result
+  return result as Command & {count: number}
 }
 
 describe("keymap", () => {
@@ -40,6 +41,7 @@ describe("keymap", () => {
       ist(state, fakeView.state)
       ist(dispatch, fakeView.dispatch)
       ist(view, fakeView)
+      return true
     }}), "X")
   })
 
