@@ -67,7 +67,7 @@ function modifiers(name: string, event: KeyboardEvent, shift: boolean) {
 /// You can add multiple keymap plugins to an editor. The order in
 /// which they appear determines their precedence (the ones early in
 /// the array get to dispatch first).
-export function keymap(bindings: {[key: string]: Command}) {
+export function keymap(bindings: {[key: string]: Command}): Plugin {
   return new Plugin({props: {handleKeyDown: keydownHandler(bindings)}})
 }
 
