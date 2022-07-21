@@ -8,7 +8,7 @@ function dispatch(map: Plugin, key: string, props?: {[name: string]: any}) {
   let event: any = {}
   if (props) for (let prop in props) event[prop] = props[prop]
   event.key = key
-  map.props.handleKeyDown!(fakeView as any, event)
+  ;(map.props.handleKeyDown as any)(fakeView as any, event)
 }
 
 function counter() {
