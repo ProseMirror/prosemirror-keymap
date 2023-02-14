@@ -30,11 +30,11 @@ function normalize(map: {[key: string]: Command}) {
   return copy
 }
 
-function modifiers(name: string, event: KeyboardEvent, shift: boolean) {
+function modifiers(name: string, event: KeyboardEvent, shift = true) {
   if (event.altKey) name = "Alt-" + name
   if (event.ctrlKey) name = "Ctrl-" + name
   if (event.metaKey) name = "Meta-" + name
-  if (shift !== false && event.shiftKey) name = "Shift-" + name
+  if (shift && event.shiftKey) name = "Shift-" + name
   return name
 }
 
@@ -77,22 +77,25 @@ export function keymap(bindings: {[key: string]: Command}): Plugin {
 export function keydownHandler(bindings: {[key: string]: Command}): (view: EditorView, event: KeyboardEvent) => boolean {
   let map = normalize(bindings)
   return function(view, event) {
-    let name = keyName(event), isChar = name.length == 1 && name != " ", baseName
-    let direct = map[modifiers(name, event, !isChar)]
+    let name = keyName(event), baseName, direct = map[modifiers(name, event)]
     if (direct && direct(view.state, view.dispatch, view)) return true
-    if (isChar && (event.shiftKey || event.altKey || event.metaKey || name.charCodeAt(0) > 127) &&
-        (baseName = base[event.keyCode]) && baseName != name) {
-      // Try falling back to the keyCode when there's a modifier
-      // active or the character produced isn't ASCII, and our table
-      // produces a different name from the the keyCode. See #668,
-      // #1060
-      let fromCode = map[modifiers(baseName, event, true)]
-      if (fromCode && fromCode(view.state, view.dispatch, view)) return true
-    } else if (isChar && event.shiftKey) {
-      // Otherwise, if shift is active, also try the binding with the
-      // Shift- prefix enabled. See #997
-      let withShift = map[modifiers(name, event, true)]
-      if (withShift && withShift(view.state, view.dispatch, view)) return true
+    // A character key
+    if (name.length == 1 && name != " ") {
+      if (event.shiftKey) {
+        // In case the name was already modified by shift, try looking
+        // it up without its shift modifier
+        let noShift = map[modifiers(name, event, false)]
+        if (noShift && noShift(view.state, view.dispatch, view)) return true
+      }
+      if ((event.shiftKey || event.altKey || event.metaKey || name.charCodeAt(0) > 127) &&
+          (baseName = base[event.keyCode]) && baseName != name) {
+        // Try falling back to the keyCode when there's a modifier
+        // active or the character produced isn't ASCII, and our table
+        // produces a different name from the the keyCode. See #668,
+        // #1060
+        let fromCode = map[modifiers(baseName, event)]
+        if (fromCode && fromCode(view.state, view.dispatch, view)) return true
+      }
     }
     return false
   }
