@@ -1,3 +1,9 @@
+## 1.2.1 (2023-02-14)
+
+### Bug fixes
+
+Work around macOS putting the unmodified character in `KeyboardEvent.key` when Cmd is held down, fixing shift-cmd-letter bindings.
+
 ## 1.2.0 (2022-05-30)
 
 ### New features
