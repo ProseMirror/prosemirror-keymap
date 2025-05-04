@@ -1,3 +1,9 @@
+## 1.2.3 (2025-05-04)
+
+### Bug fixes
+
+Fix an issue where the library was too eager to dispatch keys by key code when the character produced isn't ASCII.
+
 ## 1.2.2 (2023-05-17)
 
 ### Bug fixes

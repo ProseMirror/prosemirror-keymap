@@ -1,6 +1,6 @@
 {
   "name": "prosemirror-keymap",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Keymap plugin for ProseMirror",
   "type": "module",
   "main": "dist/index.cjs",
