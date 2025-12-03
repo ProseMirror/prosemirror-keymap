@@ -47,9 +47,9 @@ describe("keymap", () => {
 
   it("tries both shifted key and base with shift modifier", () => {
     let percent = counter(), shift5 = counter()
-    dispatch(keymap({"%": percent}), "%", {shiftKey: true, keyCode: 53})
+    dispatch(keymap({"Ctrl-%": percent}), "%", {shiftKey: true, ctrlKey: true, keyCode: 53})
     ist(percent.count, 1)
-    dispatch(keymap({"Shift-5": shift5}), "%", {shiftKey: true, keyCode: 53})
+    dispatch(keymap({"Ctrl-Shift-5": shift5}), "%", {shiftKey: true, ctrlKey: true, keyCode: 53})
     ist(shift5.count, 1)
   })
 
