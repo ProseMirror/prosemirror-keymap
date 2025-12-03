@@ -104,7 +104,7 @@ export function keydownHandler(bindings: {[key: string]: Command}): (view: Edito
         // Try falling back to the keyCode when there's a modifier
         // active or the character produced isn't ASCII, and our table
         // produces a different name from the the keyCode. See #668,
-        // #1060, #1529
+        // #1060, #1529.
         let fromCode = modifiers(baseName, event)
         if (execKey(view, map, fromCode)) return true
       }
