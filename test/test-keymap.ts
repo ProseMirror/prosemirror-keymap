@@ -64,4 +64,18 @@ describe("keymap", () => {
     dispatch(keymap({"Mod-s": count}), "ы", {ctrlKey: true, keyCode: 83})
     ist(count.count, 1)
   })
+
+  it('tries all matching key binding variations', () => {
+    let keys = ["Shift-Control-Space", "s-Ctrl-Space", "s-c-Space"];
+    let records: Record<string, boolean> = {};
+    let createCommand = (key: string): Command => () => {
+      records[key] = true;
+      return false;
+    };
+    let map = Object.fromEntries(keys.map(key => [key, createCommand(key)]));
+    dispatch(keymap(map), " ", { ctrlKey: true, shiftKey: true });
+    for (let key of keys) {
+      ist(records[key], true);
+    }
+  })
 })

@@ -26,9 +26,9 @@ function normalizeKeyName(name: string) {
 }
 
 function normalize(map: {[key: string]: Command}) {
-  let copy: {[key: string]: Command} = Object.create(null)
-  for (let prop in map) copy[normalizeKeyName(prop)] = map[prop]
-  return copy
+  let grouped: {[key: string]: Command[]} = Object.create(null)
+  for (let prop in map) (grouped[normalizeKeyName(prop)] ||= []).push(map[prop])
+  return grouped
 }
 
 function modifiers(name: string, event: KeyboardEvent, shift = true) {
@@ -37,6 +37,15 @@ function modifiers(name: string, event: KeyboardEvent, shift = true) {
   if (event.metaKey) name = "Meta-" + name
   if (shift && event.shiftKey) name = "Shift-" + name
   return name
+}
+
+function execKey(view: EditorView, map: {[key: string]: Command[]}, key: string) {
+  let commands = map[key]
+  if (commands) {
+    for (let command of commands) {
+      if (command(view.state, view.dispatch, view)) return true
+    }
+  }
 }
 
 /// Create a keymap plugin for the given set of bindings.
@@ -78,15 +87,15 @@ export function keymap(bindings: {[key: string]: Command}): Plugin {
 export function keydownHandler(bindings: {[key: string]: Command}): (view: EditorView, event: KeyboardEvent) => boolean {
   let map = normalize(bindings)
   return function(view, event) {
-    let name = keyName(event), baseName, direct = map[modifiers(name, event)]
-    if (direct && direct(view.state, view.dispatch, view)) return true
+    let name = keyName(event), baseName, direct = modifiers(name, event)
+    if (execKey(view, map, direct)) return true
     // A character key
     if (name.length == 1 && name != " ") {
       if (event.shiftKey) {
         // In case the name was already modified by shift, try looking
         // it up without its shift modifier
-        let noShift = map[modifiers(name, event, false)]
-        if (noShift && noShift(view.state, view.dispatch, view)) return true
+        let noShift = modifiers(name, event, false)
+        if (execKey(view, map, noShift)) return true
       }
       if ((event.altKey || event.metaKey || event.ctrlKey) &&
           // Ctrl-Alt may be used for AltGr on Windows
@@ -95,9 +104,9 @@ export function keydownHandler(bindings: {[key: string]: Command}): (view: Edito
         // Try falling back to the keyCode when there's a modifier
         // active or the character produced isn't ASCII, and our table
         // produces a different name from the the keyCode. See #668,
-        // #1060, #1529.
-        let fromCode = map[modifiers(baseName, event)]
-        if (fromCode && fromCode(view.state, view.dispatch, view)) return true
+        // #1060, #1529
+        let fromCode = modifiers(baseName, event)
+        if (execKey(view, map, fromCode)) return true
       }
     }
     return false
