@@ -27,7 +27,12 @@ function normalizeKeyName(name: string) {
 
 function normalize(map: {[key: string]: Command}) {
   let copy: {[key: string]: Command} = Object.create(null)
-  for (let prop in map) copy[normalizeKeyName(prop)] = map[prop]
+  for (let prop in map) {
+    let norm = normalizeKeyName(prop)
+    if (Object.prototype.hasOwnProperty.call(copy, norm))
+      throw new Error("Multiple bindings for key " + norm + " in a single keymap")
+    copy[norm] = map[prop]
+  }
   return copy
 }
 
