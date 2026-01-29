@@ -1,4 +1,4 @@
-import {keymap} from "prosemirror-keymap"
+import {keymap, keydownHandler} from "prosemirror-keymap"
 import {Command, Plugin} from "prosemirror-state"
 import ist from "ist"
 
@@ -63,5 +63,11 @@ describe("keymap", () => {
     let count = counter()
     dispatch(keymap({"Mod-s": count}), "ы", {ctrlKey: true, keyCode: 83})
     ist(count.count, 1)
+  })
+
+  it("exposes the normalized bindings", () => {
+    let a = counter()
+    let handler = keydownHandler({"control-shift-Enter": a})
+    ist(handler.bindings["Shift-Ctrl-Enter"], a)
   })
 })

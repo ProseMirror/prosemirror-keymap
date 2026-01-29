@@ -71,12 +71,19 @@ export function keymap(bindings: {[key: string]: Command}): Plugin {
   return new Plugin({props: {handleKeyDown: keydownHandler(bindings)}})
 }
 
+/// A function that responds to
+/// [`EditorProps.handleKeyDown`](#view.EditorProps.handleKeyDown).
+export type KeydownHandler = ((view: EditorView, event: KeyboardEvent) => boolean) & {
+  /// The normalized key bindings that this handler responds to.
+  bindings: {[key: string]: Command}
+}
+
 /// Given a set of bindings (using the same format as
 /// [`keymap`](#keymap.keymap)), return a [keydown
 /// handler](#view.EditorProps.handleKeyDown) that handles them.
-export function keydownHandler(bindings: {[key: string]: Command}): (view: EditorView, event: KeyboardEvent) => boolean {
+export function keydownHandler(bindings: {[key: string]: Command}): KeydownHandler {
   let map = normalize(bindings)
-  return function(view, event) {
+  return Object.assign(function(view: EditorView, event: KeyboardEvent) {
     let name = keyName(event), baseName, direct = map[modifiers(name, event)]
     if (direct && direct(view.state, view.dispatch, view)) return true
     // A character key
@@ -98,5 +105,5 @@ export function keydownHandler(bindings: {[key: string]: Command}): (view: Edito
       }
     }
     return false
-  }
+  }, {bindings: map})
 }
