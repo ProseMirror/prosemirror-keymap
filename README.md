@@ -1,3 +1,5 @@
+**This repository has moved to https://github.com/ProseMirror/prosemirror-keymap**
+
 # prosemirror-keymap
 
 [ [**WEBSITE**](https://prosemirror.net) | [**ISSUES**](https://code.haverbeke.berlin/prosemirror/prosemirror/issues) | [**FORUM**](https://discuss.prosemirror.net) | [**CHANGELOG**](https://code.haverbeke.berlin/prosemirror/prosemirror-keymap/src/branch/main/CHANGELOG.md) ]
